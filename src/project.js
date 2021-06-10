@@ -41,12 +41,12 @@ export const projectCreation = (() => {
     const renderProjectView = (projectArr) => {
         const PROJECT_LIST = document.querySelector("#project-list");
         PROJECT_LIST.innerHTML = `
-          <li class="list-group-item list-group-item-dark" id="project-list">All Projects</li>
+          <li class="list-group-item list-group-item-dark btn my-1" id="project-list">All Projects</li>
         `;
 
         for (let i = 0; i < projectArr.length; i++) {
             PROJECT_LIST.innerHTML += `
-        <li class="list-group-item list-group-item-dark" id="project-list">${projectArr[i].title}</li>
+        <li class="list-group-item list-group-item-dark btn my-1" id="project-list">${projectArr[i].title}</li>
       `;
         }
     }
@@ -95,19 +95,66 @@ export const projectCreation = (() => {
         if (projectName === "All Projects") {
             ADD_TASK_BTN.classList.add('d-none');
             for (let i = 0; i < tasksArr.length; i++) {
+                let color = getColor(tasksArr, i);
+
                 TASK_LIST.innerHTML += `
-            <li class="list-group-item list-group-item-dark">${tasksArr[i].title}</li>
-          `;
+                  <li class="">
+                      <p>
+                        <button class="btn btn-${color} w-100" type="button" data-bs-toggle="collapse" data-bs-target="#task-${i}" aria-expanded="false" aria-controls="task-${i}">
+                          ${tasksArr[i].title}
+                        </button>
+                      </p>
+                        
+                      <div class="collapse" id="task-${i}">
+                        <div class="card card-body bg-${color} mb-4">
+                          <ul class="list-group">
+                              <li class="list-group-item bg-${color} text-white"><span class="fw-bold">Description</span>: ${tasksArr[i].description}</li>
+                              <li class="list-group-item bg-${color} text-white"><span class="fw-bold">Due Date</span>: ${tasksArr[i].dueDate}</li>
+                              <li class="list-group-item bg-${color} text-white"><span class="fw-bold">Priority</span>: ${tasksArr[i].priority}</li>
+                          </ul>
+                        </div>
+                      </div>
+                  </li>
+            `;
             }
         } else {
             ADD_TASK_BTN.classList.remove('d-none');
             let projectTasks = tasksArr.filter(task => task.project === projectName);
             for (let i = 0; i < projectTasks.length; i++) {
+                let color = getColor(projectTasks, i);
+
                 TASK_LIST.innerHTML += `
-            <li class="list-group-item list-group-item-dark">${projectTasks[i].title}</li>
-          `;
+                  <li class="">
+                      <p>
+                        <button class="btn btn-${color} w-100" type="button" data-bs-toggle="collapse" data-bs-target="#task-${i}" aria-expanded="false" aria-controls="task-${i}">
+                          ${projectTasks[i].title}
+                        </button>
+                      </p>
+                        
+                      <div class="collapse" id="task-${i}">
+                        <div class="card card-body bg-${color} mb-4">
+                          <ul class="list-group ">
+                              <li class="list-group-item bg-${color} text-white"><span class="fw-bold">Description</span>: ${projectTasks[i].description}</li>
+                              <li class="list-group-item bg-${color} text-white"><span class="fw-bold">Due Date</span>: ${projectTasks[i].dueDate}</li>
+                              <li class="list-group-item bg-${color} text-white"><span class="fw-bold">Priority</span>: ${projectTasks[i].priority}</li>
+                          </ul>
+                        </div>
+                      </div>
+                  </li>
+            `;
             }
         }
+    }
+    const getColor = (arr, i) => {
+        let color;
+        if (arr[i].priority === 'low') {
+            color = 'success';
+        } else if (arr[i].priority === 'medium') {
+            color = 'info';
+        } else {
+            color = 'danger';
+        }
+        return color;
     }
 
     return {

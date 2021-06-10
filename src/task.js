@@ -52,10 +52,40 @@ export const taskCreation = (() => {
         let projectTasks = tasksArr.filter(task => task.project === taskProject);
 
         for (let i = 0; i < projectTasks.length; i++) {
+            let color = getColor(projectTasks, i);
+
             TASKS_LIST.innerHTML += `
-          <li class="list-group-item list-group-item-dark">${projectTasks[i].title}</li>
-        `;
+              <li class="">
+                  <p>
+                    <button class="btn btn-${color} w-100" type="button" data-bs-toggle="collapse" data-bs-target="#task-${i}" aria-expanded="false" aria-controls="task-${i}">
+                      ${projectTasks[i].title}
+                    </button>
+                  </p>
+                    
+                  <div class="collapse" id="task-${i}">
+                    <div class="card card-body bg-${color} mb-4">
+                      <ul class="list-group ">
+                          <li class="list-group-item bg-${color} text-white"><span class="fw-bold">Description</span>: ${projectTasks[i].description}</li>
+                          <li class="list-group-item bg-${color} text-white"><span class="fw-bold">Due Date</span>: ${projectTasks[i].dueDate}</li>
+                          <li class="list-group-item bg-${color} text-white"><span class="fw-bold">Priority</span>: ${projectTasks[i].priority}</li>
+                      </ul>
+                    </div>
+                  </div>
+              </li>
+            `;
         }
+    }
+
+    const getColor = (arr, i) => {
+        let color;
+        if (arr[i].priority === 'low') {
+            color = 'success';
+        } else if (arr[i].priority === 'medium') {
+            color = 'info';
+        } else {
+            color = 'danger';
+        }
+        return color;
     }
 
     return {
