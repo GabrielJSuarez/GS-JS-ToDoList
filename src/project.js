@@ -91,9 +91,11 @@ export const projectCreation = (() => {
         const TASK_LIST = document.querySelector("#tasks-list");
         TASK_LIST.innerHTML = ``;
         const ADD_TASK_BTN = document.querySelector('#add-task');
+        const FORM = document.querySelector('#multiCollapseExample2');
 
         if (projectName === "All Projects") {
             ADD_TASK_BTN.classList.add('d-none');
+            FORM.classList.add('d-none');
             for (let i = 0; i < tasksArr.length; i++) {
                 let color = getColor(tasksArr, i);
 
@@ -119,6 +121,7 @@ export const projectCreation = (() => {
             }
         } else {
             ADD_TASK_BTN.classList.remove('d-none');
+            FORM.classList.remove('d-none');
             let projectTasks = tasksArr.filter(task => task.project === projectName);
             for (let i = 0; i < projectTasks.length; i++) {
                 let color = getColor(projectTasks, i);
